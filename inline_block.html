@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+	<script type="text/javascript">
+
+	document.addEventListener("DOMContentLoaded", function() {
+		var store    = null;
+		var test     = $("#test");
+		var test_dom = document.getElementById("test");
+
+		document.getElementById("btn").addEventListener("click", function() {
+			var parent = $("<div>");
+
+			console.log(test_dom.childNodes);
+
+			for(var j=0; j<test_dom.childNodes.length; j++) {
+				console.log(test_dom.childNodes[j]);
+			};
+
+			for(var i=0; i<6; i++) {
+				var newLi = $("<li>");
+				newLi.text("test");
+
+				//document.getElementById("test").appendChild(newLi);
+				//document.getElementById("test").innerHTML += "<li>test</li>";
+				parent.append(newLi);
+			};
+			var cln = test.clone(true);
+			test.html("");
+			store = $(cln.html() + parent.html());
+//			document.getElementById("test").innerHTML = document.getElementById("test").innerHTML + parent;
+		});
+
+		document.getElementById("btn2").addEventListener("click", function() {
+			console.log($(store));
+			test.append($(store));
+		});
+	});
+
+	</script>
+	<style>
+		* {
+			margin  :0;
+			padding :0;
+		}
+
+		#test {
+			margin : 20px;
+			width  : 300px;
+			height : 300px;
+			border : solid 1px black;
+		}
+		#test li{
+			display : inline-block;
+			width   : 50px;
+			height  : 50px;
+
+			background-color: blue;
+		}
+	</style>
+
+</head>
+
+<body>
+	<button id="btn">リストを追加1</button>
+	<button id="btn2">リストを追加2</button>
+	<ul id="test"><li>test</li><li>test</li>
+		<li>test</li><li>test</li><li>test</li><li>test</li><li>test</li></ul>
+</body>
+
+</html>
