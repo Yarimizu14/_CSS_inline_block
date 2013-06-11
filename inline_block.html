@@ -91,33 +91,20 @@
 			}
 		}
 
+		//display:inline-blockを使って行リストを追加
+		d.getElementById("addInline").addEventListener("click", function(e) {
+			var parent = d.getElementById("inlineList");
+
+			appendList(parent);
+			showNodes(parent);
+		});
+
 		//float:floatを使って行リストを追加
 		d.getElementById("addFloat").addEventListener("click", function(e) {
 			var parent = d.getElementById("floatList");
 
 			appendList(parent);
-			 //子ノードを表示 
-			 /*
-			 	・最初からDOMに存在したliタグの間にはテキストノードが含まれる。
-			 	・JSで追加した要素の間にはテキストノードは存在しない。
-			 	・floatで横に並べた場合間にテキストノードがあっても要素間にマージンは生まれない。
-			 */
-			 showNodes(parent);
-		});
-
-		//display:inline-blockを使って行リストを追加
-		d.getElementById("addInline").addEventListener("click", function(e) {
-			var parent = d.getElementById("inlineList");
-
-			/* N個のリスト要素を追加 */
-			appendList(parent);
-
-			 //子ノードを表示 
-			 /*
-			 	・最初からDOMに存在したliタグの間にはテキストノードが含まれる。
-			 	・JSで追加した要素の間にはテキストノードは存在しない。
-			 */
-			 showNodes(parent);
+			showNodes(parent);
 		});
 
 		//display:-webkit-boxを使って行リストを追加
@@ -126,13 +113,7 @@
 
 			/* N個のリスト要素を追加 */
 			appendList(parent);
-
-			 //子ノードを表示 
-			 /*
-			 	・最初からDOMに存在したliタグの間にはテキストノードが含まれる。
-			 	・JSで追加した要素の間にはテキストノードは存在しない。
-			 */
-			 showNodes(parent);
+			showNodes(parent);
 		});
 
 	});
@@ -143,32 +124,9 @@
 </head>
 
 <body>
-	<button id="addFloat">floatでリストを追加</button><br>
 	<button id="addInline">inline-blockでリストを追加</button><br>
+	<button id="addFloat">floatでリストを追加</button><br>
 	<button id="addBoxlist">boxでリストを追加</button><br>
-
-	<!--
-		display : inline-block
-
-		メリット
-			・親要素の端にくると改行してくれる
-		デメリット
-			・clearfixなどが面倒
-			・要素の高さが違うと改行された際に表示が汚くなる。
-
-		解決方法
-			・HTML内でinline-block要素で指定してる要素間をコメントアウトするとテキストノードが生まれなくなる
-	-->
-	<h5>floatを使った行リスト</h5>
-	<ul id="floatList" class="clearfix">
-		<li>test</li>
-		<li>test</li>
-		<li>test</li>
-		<li>test</li>
-		<li>test</li>
-		<li>test</li>
-		<li>test</li>
-	</ul>
 
 	<!--
 		display : inline-block
@@ -186,6 +144,28 @@
 	-->
 	<h5>inline-blockを使った行形式のリスト</h5>
 	<ul id="inlineList">
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+	</ul>
+
+	<!--
+		display : float
+
+		メリット
+			・親要素の端にくると改行してくれる
+			・floatで横に並べた場合間にテキストノードがあっても要素間にマージンは生まれない。
+			・要素間にテキストノードがあっても無視されるためJSで後から追加しても表示が変化しない。
+		デメリット
+			・clearfixなどが面倒
+			・要素の高さが違うと改行された際に表示が汚くなる。
+	-->
+	<h5>floatを使った行リスト</h5>
+	<ul id="floatList" class="clearfix">
 		<li>test</li>
 		<li>test</li>
 		<li>test</li>
