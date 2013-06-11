@@ -3,72 +3,219 @@
 
 <head>
 	<meta charset="UTF-8">
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-	<script type="text/javascript">
 
-	document.addEventListener("DOMContentLoaded", function() {
-		var store    = null;
-		var test     = $("#test");
-		var test_dom = document.getElementById("test");
-
-		document.getElementById("btn").addEventListener("click", function() {
-			var parent = $("<div>");
-
-			console.log(test_dom.childNodes);
-
-			for(var j=0; j<test_dom.childNodes.length; j++) {
-				console.log(test_dom.childNodes[j]);
-			};
-
-			for(var i=0; i<6; i++) {
-				var newLi = $("<li>");
-				newLi.text("test");
-
-				//document.getElementById("test").appendChild(newLi);
-				//document.getElementById("test").innerHTML += "<li>test</li>";
-				parent.append(newLi);
-			};
-			var cln = test.clone(true);
-			test.html("");
-			store = $(cln.html() + parent.html());
-//			document.getElementById("test").innerHTML = document.getElementById("test").innerHTML + parent;
-		});
-
-		document.getElementById("btn2").addEventListener("click", function() {
-			console.log($(store));
-			test.append($(store));
-		});
-	});
-
-	</script>
 	<style>
 		* {
 			margin  :0;
 			padding :0;
 		}
+		body {
+			padding : 20px;
+		}
+		h5 {
+			margin-top : 20px;
+			text-align: center;
+		}
 
-		#test {
-			margin : 20px;
+		.clearfix:after {
+			content: ""; 
+			display: block; 
+			clear: both;
+		 }
+
+		ul {
 			width  : 300px;
 			height : 300px;
 			border : solid 1px black;
 		}
-		#test li{
-			display : inline-block;
+		li {
 			width   : 50px;
 			height  : 50px;
 
+			list-style: none;
+		}
+
+		#floatList li{
+			float : left;
+
+			margin-bottom: 3px;
+
 			background-color: blue;
+			border: solid 1px red;
+		}
+		#inlineList li{
+			display : inline-block;
+
+			margin-bottom: 3px;
+
+			background-color: yellow;
+			border: solid 1px red;
+		}
+
+		ul#boxList{
+			display : -webkit-box;
+		}
+
+		ul#boxList li{
+			margin-bottom: 3px;
+
+			background-color: green;
+			border: solid 1px red;
 		}
 	</style>
+
+
+	<script type="text/javascript">
+
+	document.addEventListener("DOMContentLoaded", function() {
+		var d = window.document;
+
+		//全ての子ノードを出力する
+		var showNodes = function(p) {
+			var childList = p.childNodes;
+			for(var j=0; j < childList.length; j++) {
+				console.log(childList[j]);
+			};
+		}
+
+		//N個のliタグをappendする
+		var appendList = function(p) {
+			var N      = 6;
+
+			/* N個のリスト要素を追加 */
+			for(var i=0; i < N; i++) {
+				var newLi = d.createElement("li");
+				newLi.innerText = "test";
+
+				p.appendChild(newLi);
+			}
+		}
+
+		//float:floatを使って行リストを追加
+		d.getElementById("addFloat").addEventListener("click", function(e) {
+			var parent = d.getElementById("floatList");
+
+			appendList(parent);
+			 //子ノードを表示 
+			 /*
+			 	・最初からDOMに存在したliタグの間にはテキストノードが含まれる。
+			 	・JSで追加した要素の間にはテキストノードは存在しない。
+			 	・floatで横に並べた場合間にテキストノードがあっても要素間にマージンは生まれない。
+			 */
+			 showNodes(parent);
+		});
+
+		//display:inline-blockを使って行リストを追加
+		d.getElementById("addInline").addEventListener("click", function(e) {
+			var parent = d.getElementById("inlineList");
+
+			/* N個のリスト要素を追加 */
+			appendList(parent);
+
+			 //子ノードを表示 
+			 /*
+			 	・最初からDOMに存在したliタグの間にはテキストノードが含まれる。
+			 	・JSで追加した要素の間にはテキストノードは存在しない。
+			 */
+			 showNodes(parent);
+		});
+
+		//display:-webkit-boxを使って行リストを追加
+		d.getElementById("addBoxlist").addEventListener("click", function(e) {
+			var parent = d.getElementById("boxList");
+
+			/* N個のリスト要素を追加 */
+			appendList(parent);
+
+			 //子ノードを表示 
+			 /*
+			 	・最初からDOMに存在したliタグの間にはテキストノードが含まれる。
+			 	・JSで追加した要素の間にはテキストノードは存在しない。
+			 */
+			 showNodes(parent);
+		});
+
+	});
+
+	</script>
+
 
 </head>
 
 <body>
-	<button id="btn">リストを追加1</button>
-	<button id="btn2">リストを追加2</button>
-	<ul id="test"><li>test</li><li>test</li>
-		<li>test</li><li>test</li><li>test</li><li>test</li><li>test</li></ul>
+	<button id="addFloat">floatでリストを追加</button><br>
+	<button id="addInline">inline-blockでリストを追加</button><br>
+	<button id="addBoxlist">boxでリストを追加</button><br>
+
+	<!--
+		display : inline-block
+
+		メリット
+			・親要素の端にくると改行してくれる
+		デメリット
+			・clearfixなどが面倒
+			・要素の高さが違うと改行された際に表示が汚くなる。
+
+		解決方法
+			・HTML内でinline-block要素で指定してる要素間をコメントアウトするとテキストノードが生まれなくなる
+	-->
+	<h5>floatを使った行リスト</h5>
+	<ul id="floatList" class="clearfix">
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+	</ul>
+
+	<!--
+		display : inline-block
+
+		メリット
+			・各要素の高さが違っても奇麗に表示してくれる
+			・親要素の端にくると改行してくれる
+		デメリット
+			・DOM要素の間にあるテキストノード（空白: " "）により不要なマージンが生まれる。
+			・JSで追加したinline-block要素では空白テキストノードは追加されない。
+			・そのため、全く同じCSS指定でもHTMLで記述したものとJSで後から追加したものでは表示（マージン）が異なる。
+
+		解決方法
+			・HTML内でinline-block要素で指定してる要素間をコメントアウトするとテキストノードが生まれなくなる
+	-->
+	<h5>inline-blockを使った行形式のリスト</h5>
+	<ul id="inlineList">
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+	</ul>
+
+	<!--
+		display : -webkit-box
+
+		メリット
+			・一行だけで並べる事が決まっていれば要素の順番やサイズなどをフレキシブルに表示できる。
+			・box-ordinal-group（CSSプロパティで表示順を制御できる）
+			・box-flex		　　(比率を指定して大きさを調整してくれる)
+		デメリット
+			・親要素の橋にきても改行してくれない
+			・2行以上にできない（多分）
+	-->
+	<h5>display:-webkit-boxを使った行形式のリスト</h5>
+	<ul id="boxList">
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+		<li>test</li>
+	</ul>
 </body>
 
 </html>
